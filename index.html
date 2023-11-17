@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <div>
+      <table class="main"></table>
+    </div>
+  </body>
+  <script>
+    let data = new Array();
+    let newData = new Array();
+    const set = () => {
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        const newArray = new Array();
+        for (let j = 0; j < data[i].length; j += 3) {
+          newArray.push([data[i][j], data[i][j + 1], data[i][j + 2]]);
+        }
+        newData.push(newArray);
+      }
+      console.log(newData);
+      const main = document.querySelector(".main");
+
+      for (let i = 0; i < 9; i++) {
+        let tr = document.createElement("tr");
+        for (let j = 0; j < 9; j++) {
+          let td = document.createElement("td");
+          tr.appendChild(td);
+        }
+        main.appendChild(tr);
+      }
+      
+      for (let i = 0; i < newData.length; i++) {
+        for (let j = 0; j < newData[0].length; j++) {
+          if (i === 0) {
+            $("tr")
+              .eq(newData[i][j][1] - 1)
+              .children("td")
+              .eq(newData[i][j][0] - 1)
+              .text(newData[i][j][2]);
+          }
+          if (i === 1) {
+            $("tr")
+              .eq(newData[i][j][1] - 1)
+              .children("td")
+              .eq(newData[i][j][0] + 2)
+              .text(newData[i][j][2]);
+          }
+          if (i === 2) {
+            $("tr")
+              .eq(newData[i][j][1] - 1)
+              .children("td")
+              .eq(newData[i][j][0] + 5)
+              .text(newData[i][j][2]);
+          }
+          if (i === 3) {
+            $("tr")
+              .eq(newData[i][j][1] + 2)
+              .children("td")
+              .eq(newData[i][j][0] - 1)
+              .text(newData[i][j][2]);
+          }
+          if (i === 4) {
+            $("tr")
+              .eq(newData[i][j][1] + 2)
+              .children("td")
+              .eq(newData[i][j][0] + 2)
+              .text(newData[i][j][2]);
+          }
+          if (i === 5) {
+            $("tr")
+              .eq(newData[i][j][1] + 2)
+              .children("td")
+              .eq(newData[i][j][0] + 5)
+              .text(newData[i][j][2]);
+          }
+          if (i === 6) {
+            $("tr")
+              .eq(newData[i][j][1] + 5)
+              .children("td")
+              .eq(newData[i][j][0] - 1)
+              .text(newData[i][j][2]);
+          }
+          if (i === 7) {
+            $("tr")
+              .eq(newData[i][j][1] + 5)
+              .children("td")
+              .eq(newData[i][j][0] + 2)
+              .text(newData[i][j][2]);
+          }
+          if (i === 8) {
+            $("tr")
+              .eq(newData[i][j][1] + 5)
+              .children("td")
+              .eq(newData[i][j][0] + 5)
+              .text(newData[i][j][2]);
+          }
+        }
+      }
+    };
+
+    const httpReq = new XMLHttpRequest();
+    httpReq.onload = () => {
+      if (httpReq.status == 200) {
+        for (let obj of JSON.parse(httpReq.response)) {
+          const value = Array.from(obj.val, Number);
+          data.push(value);
+        }
+        set();
+      }
+      console.log(httpReq.status);
+    };
+    httpReq.open("GET", "MOCK_DATA.json", true);
+    httpReq.send();
+  </script>
+</html>
