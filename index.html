@@ -39,7 +39,8 @@
     let data = new Array();
     let newData = new Array();
     const set = () => {
-      console.log(data);
+      // console.log(data);
+      // create a 3D array
       for (let i = 0; i < data.length; i++) {
         const newArray = new Array();
         for (let j = 0; j < data[i].length; j += 3) {
@@ -47,9 +48,9 @@
         }
         newData.push(newArray);
       }
-      console.log(newData);
+      // console.log(newData);
       const main = document.querySelector(".main");
-
+      // create tr and input
       for (let i = 0; i < 9; i++) {
         let tr = document.createElement("tr");
         for (let j = 0; j < 9; j++) {
@@ -59,7 +60,7 @@
         }
         main.appendChild(tr);
       }
-
+      // set default value and disable the input
       for (let i = 0; i < newData.length; i++) {
         for (let j = 0; j < newData[i].length; j++) {
           if (i === 0) {
@@ -212,7 +213,7 @@
         }
         set();
       }
-      console.log(httpReq.status);
+      // console.log(httpReq.status);
     };
     httpReq.open("GET", "MOCK_DATA.json", true);
     httpReq.send();
