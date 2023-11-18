@@ -35,8 +35,9 @@
       for (let i = 0; i < 9; i++) {
         let tr = document.createElement("tr");
         for (let j = 0; j < 9; j++) {
-          let td = document.createElement("td");
-          tr.appendChild(td);
+          let inp = document.createElement("input");
+          inp.type="number"
+          tr.appendChild(inp);
         }
         main.appendChild(tr);
       }
@@ -46,68 +47,105 @@
           if (i === 0) {
             $("tr")
               .eq(newData[i][j][1] - 1)
-              .children("td")
+              .children("input")
               .eq(newData[i][j][0] - 1)
-              .text(newData[i][j][2]);
+              .val(newData[i][j][2]);
+              $("tr")
+              .eq(newData[i][j][1] - 1)
+              .children("input")
+              .eq(newData[i][j][0] - 1).attr("disabled",true)
           }
           if (i === 1) {
             $("tr")
               .eq(newData[i][j][1] - 1)
-              .children("td")
+              .children("input")
               .eq(newData[i][j][0] + 2)
-              .text(newData[i][j][2]);
+              .val(newData[i][j][2]);
+              $("tr")
+              .eq(newData[i][j][1] - 1)
+              .children("input")
+              .eq(newData[i][j][0] +2).attr("disabled",true)
           }
           if (i === 2) {
             $("tr")
               .eq(newData[i][j][1] - 1)
-              .children("td")
+              .children("input")
               .eq(newData[i][j][0] + 5)
-              .text(newData[i][j][2]);
+              .val(newData[i][j][2]);
+              $("tr")
+              .eq(newData[i][j][1] - 1)
+              .children("input")
+              .eq(newData[i][j][0] +5).attr("disabled",true)
           }
           if (i === 3) {
             $("tr")
               .eq(newData[i][j][1] + 2)
-              .children("td")
+              .children("input")
               .eq(newData[i][j][0] - 1)
-              .text(newData[i][j][2]);
+              .val(newData[i][j][2]);
+              $("tr")
+              .eq(newData[i][j][1] +2)
+              .children("input")
+              .eq(newData[i][j][0] - 1).attr("disabled",true)
           }
           if (i === 4) {
             $("tr")
               .eq(newData[i][j][1] + 2)
-              .children("td")
+              .children("input")
               .eq(newData[i][j][0] + 2)
-              .text(newData[i][j][2]);
+              .val(newData[i][j][2]);
+              $("tr")
+              .eq(newData[i][j][1] +2)
+              .children("input")
+              .eq(newData[i][j][0] +2).attr("disabled",true)
           }
           if (i === 5) {
             $("tr")
               .eq(newData[i][j][1] + 2)
-              .children("td")
+              .children("input")
               .eq(newData[i][j][0] + 5)
-              .text(newData[i][j][2]);
+              .val(newData[i][j][2]);
+              $("tr")
+              .eq(newData[i][j][1] +2)
+              .children("input")
+              .eq(newData[i][j][0] +5).attr("disabled",true)
           }
           if (i === 6) {
             $("tr")
               .eq(newData[i][j][1] + 5)
-              .children("td")
+              .children("input")
               .eq(newData[i][j][0] - 1)
-              .text(newData[i][j][2]);
+              .val(newData[i][j][2]);
+              $("tr")
+              .eq(newData[i][j][1] +5)
+              .children("input")
+              .eq(newData[i][j][0] - 1).attr("disabled",true)
           }
           if (i === 7) {
             $("tr")
               .eq(newData[i][j][1] + 5)
-              .children("td")
+              .children("input")
               .eq(newData[i][j][0] + 2)
-              .text(newData[i][j][2]);
+              .val(newData[i][j][2]);
+              $("tr")
+              .eq(newData[i][j][1] +5)
+              .children("input")
+              .eq(newData[i][j][0] +2).attr("disabled",true)
           }
           if (i === 8) {
             $("tr")
               .eq(newData[i][j][1] + 5)
-              .children("td")
+              .children("input")
               .eq(newData[i][j][0] + 5)
-              .text(newData[i][j][2]);
+              .val(newData[i][j][2]);
+              $("tr")
+              .eq(newData[i][j][1] +5)
+              .children("input")
+              .eq(newData[i][j][0] +5).attr("disabled",true)
           }
         }
       }
+
     };
 
     const httpReq = new XMLHttpRequest();
