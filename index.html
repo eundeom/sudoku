@@ -173,8 +173,67 @@
 				}
 			}
 		};
-
-		const isCorrect = () => {};
+		//  check rows of the sudoku table
+		const isCorrectRow = () => {
+			// looping the row of the table
+			for (let tr of $('tr')) {
+				const inputs = $(tr).children();
+				// unique number
+				const nums = new Set();
+				// looping the value of the row
+				for (let input of inputs) {
+					if (nums.has($(input).val())) {
+						return false;
+					} else {
+						nums.add($(input).val());
+					}
+				}
+			}
+			return true;
+		};
+		const isCorrectCol = () => {
+			// looping the table by column
+			for (let i = 0; i < 9; i++) {
+				const nums = new Set();
+				for (let tr of $('tr')) {
+					// input of the i column
+					const input = $(tr).children().eq(i);
+					if (nums.has($(input).val())) {
+						return false;
+					} else {
+						nums.add($(input).val());
+					}
+				}
+			}
+			return true;
+		};
+		const isCorrectSqu = () => {
+			// looping every square by i and j
+			for (let i = 0; i < 9; i += 3) {
+				for (let j = 0; j < 9; j += 3) {
+					const nums = new Set();
+					for (let row = i; row < i + 3; row++) {
+						for (let col = j; col < j + 3; col++) {
+							// find the input by row and col
+							const input = $('tr').eq(row).children().eq(col);
+							if (nums.has($(input).val())) {
+								return false;
+							} else {
+								nums.add($(input).val());
+							}
+						}
+					}
+				}
+			}
+			return true;
+		};
+		const isCorrect = () => {
+			if (isCorrectRow() && isCorrectCol() && isCorrectSqu()) {
+				return true;
+			} else {
+				return false;
+			}
+		};
 
 		const validateSudoku = () => {
 			$('input:not(:disabled)').each(function () {
@@ -189,9 +248,12 @@
 		};
 
 		$('button').on('click', () => {
-			// console.log(validateSudoku());
 			if (validateSudoku()) {
-				alert('All the cells are filled.');
+				if (isCorrect()) {
+					alert('You have solved it!!');
+				} else {
+					alert('It is not the right answer. Try it again!');
+				}
 			} else {
 				alert('There are empty cells or non-numerical cells.');
 			}
