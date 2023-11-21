@@ -42,3 +42,6 @@ table {
 .btn {
   margin: 0 45%;
 }
+.main input:disabled{
+  background-color: rgb(255, 249, 241);
+}
