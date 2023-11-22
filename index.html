@@ -144,11 +144,11 @@
       for (let input of $("input:not(:disabled)")) {
         let sudokuVal = Number($(input).val());
         if (sudokuVal < 1 || sudokuVal > 9) {
-          // if sudokuVal is 1~9
-          return 2;
+          // if sudokuVal is NOT 1~9
+          return 3;
         } else if (isNaN(sudokuVal) || sudokuVal == "") {
           // if sudokuVal is NOT number or empty
-          return 3;
+          return 2;
         }
       }
       return 1;
