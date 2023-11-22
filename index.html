@@ -1,182 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </head>
 
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Document</title>
-	<link rel="stylesheet" href="style.css" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-		integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-		crossorigin="anonymous"></script>
-</head>
+  <body>
+    <div class="entire">
+      <button
+        type="button"
+        class="btn btn-outline-primary btn-lg"
+        style="color: #6091d3; background-color: white"
+      >
+        validate
+      </button>
+      <table class="main"></table>
+    </div>
+  </body>
+  <script>
+    let data = new Array();
+    let newData = new Array();
+    const set = () => {
+      // create a 3D array
+      for (let i = 0; i < data.length; i++) {
+        const newArray = new Array();
+        for (let j = 0; j < data[i].length; j += 3) {
+          newArray.push([data[i][j], data[i][j + 1], data[i][j + 2]]);
+        }
+        newData.push(newArray);
+      }
+      // console.log(newData);
+      const main = document.querySelector(".main");
+      // create tr and input
+      for (let i = 0; i < 9; i++) {
+        let tr = document.createElement("tr");
+        for (let j = 0; j < 9; j++) {
+          let inp = document.createElement("input");
+          inp.type = "number";
+          tr.appendChild(inp);
+        }
+        main.appendChild(tr);
+      }
+      // set default value and disable the input
+      let num = 0;
+      // looping every square by i and j
+      for (let i = 0; i < 9; i += 3) {
+        for (let j = 0; j < 9; j += 3) {
+          for (let k = 0; k < newData[num].length; k++) {
+            // put default value
+            let row = i + newData[num][k][1] - 1;
+            let col = j + newData[num][k][0] - 1;
+            let val = newData[num][k][2];
+            $("tr").eq(row).children("input").eq(col).val(val);
+            // disable the input tag
+            $("tr").eq(row).children("input").eq(col).attr("disabled", true);
+          }
+          num++;
+        }
+      }
+    };
+    //  check rows of the sudoku table
+    const isCorrectRow = () => {
+      // looping the row of the table
+      for (let tr of $("tr")) {
+        const inputs = $(tr).children();
+        // unique number
+        const nums = new Set();
+        // looping the value of the row
+        for (let input of inputs) {
+          if (nums.has($(input).val())) {
+            return false;
+          } else {
+            nums.add($(input).val());
+          }
+        }
+      }
+      return true;
+    };
+    const isCorrectCol = () => {
+      // looping the table by column
+      for (let i = 0; i < 9; i++) {
+        const nums = new Set();
+        for (let tr of $("tr")) {
+          // input of the i column
+          const input = $(tr).children().eq(i);
+          if (nums.has($(input).val())) {
+            return false;
+          } else {
+            nums.add($(input).val());
+          }
+        }
+      }
+      return true;
+    };
+    const isCorrectSqu = () => {
+      // looping every square by i and j
+      for (let i = 0; i < 9; i += 3) {
+        for (let j = 0; j < 9; j += 3) {
+          const nums = new Set();
+          for (let row = i; row < i + 3; row++) {
+            for (let col = j; col < j + 3; col++) {
+              // find the input by row and col
+              const input = $("tr").eq(row).children().eq(col);
+              if (nums.has($(input).val())) {
+                return false;
+              } else {
+                nums.add($(input).val());
+              }
+            }
+          }
+        }
+      }
+      return true;
+    };
+    const isCorrect = () => {
+      if (isCorrectRow() && isCorrectCol() && isCorrectSqu()) {
+        return true;
+      } else {
+        return false;
+      }
+    };
 
-<body>
-	<div class="entire">
-		<button type="button" class="btn btn-outline-primary btn-lg" style="color: #6091d3; background-color: white">
-			validate
-		</button>
-		<table class="main"></table>
-	</div>
-</body>
-<script>
-	let data = new Array();
-	let newData = new Array();
-	const set = () => {
-		// create a 3D array
-		for (let i = 0; i < data.length; i++) {
-			const newArray = new Array();
-			for (let j = 0; j < data[i].length; j += 3) {
-				newArray.push([data[i][j], data[i][j + 1], data[i][j + 2]]);
-			}
-			newData.push(newArray);
-		}
-		// console.log(newData);
-		const main = document.querySelector('.main');
-		// create tr and input
-		for (let i = 0; i < 9; i++) {
-			let tr = document.createElement('tr');
-			for (let j = 0; j < 9; j++) {
-				let inp = document.createElement('input');
-				inp.type = 'number';
-				tr.appendChild(inp);
-			}
-			main.appendChild(tr);
-		}
-		// set default value and disable the input
-		let num = 0;
-		// looping every square by i and j
-		for (let i = 0; i < 9; i += 3) {
-			for (let j = 0; j < 9; j += 3) {
-				for (let k = 0; k < newData[num].length; k++) {
-					// put default value
-					let row = i + newData[num][k][1] - 1
-					let col = j + newData[num][k][0] - 1
-					let val = newData[num][k][2]
-					$('tr')
-						.eq(row)
-						.children('input')
-						.eq(col)
-						.val(val);
-					// disable the input tag
-					$('tr')
-						.eq(row)
-						.children('input')
-						.eq(col)
-						.attr('disabled', true);
-				}
-				num++
-			}
-		}
-	};
-	//  check rows of the sudoku table
-	const isCorrectRow = () => {
-		// looping the row of the table
-		for (let tr of $('tr')) {
-			const inputs = $(tr).children();
-			// unique number
-			const nums = new Set();
-			// looping the value of the row
-			for (let input of inputs) {
-				if (nums.has($(input).val())) {
-					return false;
-				} else {
-					nums.add($(input).val());
-				}
-			}
-		}
-		return true;
-	};
-	const isCorrectCol = () => {
-		// looping the table by column
-		for (let i = 0; i < 9; i++) {
-			const nums = new Set();
-			for (let tr of $('tr')) {
-				// input of the i column
-				const input = $(tr).children().eq(i);
-				if (nums.has($(input).val())) {
-					return false;
-				} else {
-					nums.add($(input).val());
-				}
-			}
-		}
-		return true;
-	};
-	const isCorrectSqu = () => {
-		// looping every square by i and j
-		for (let i = 0; i < 9; i += 3) {
-			for (let j = 0; j < 9; j += 3) {
-				const nums = new Set();
-				for (let row = i; row < i + 3; row++) {
-					for (let col = j; col < j + 3; col++) {
-						// find the input by row and col
-						const input = $('tr').eq(row).children().eq(col);
-						if (nums.has($(input).val())) {
-							return false;
-						} else {
-							nums.add($(input).val());
-						}
-					}
-				}
-			}
-		}
-		return true;
-	};
-	const isCorrect = () => {
-		if (isCorrectRow() && isCorrectCol() && isCorrectSqu()) {
-			return true;
-		} else {
-			return false;
-		}
-	};
+    const validateSudoku = () => {
+      for (let input of $("input:not(:disabled)")) {
+        let sudokuVal = Number($(input).val());
+        if (sudokuVal < 1 || sudokuVal > 9) {
+          // if sudokuVal empty or 1~9
+          return 2;
+        } else if (isNaN(sudokuVal) || sudokuVal == "") {
+          // if sudokuVal is NOT number
+          return 3;
+        }
+      }
+      return 1;
+    };
 
-	const validateSudoku = () => {
-		for (let input of $('input:not(:disabled)')) {
-			let sudokuVal = Number($(input).val());
-			if (
-				isNaN(sudokuVal) ||
-				sudokuVal == '' ||
-				sudokuVal < 1 ||
-				sudokuVal > 9
-			) {
-				// if sudokuVal is NOT number or empty or 1~9
-				return false;
-			}
-		}
-		return true;
-	};
+    $("button").on("click", () => {
+      if (validateSudoku() == 1) {
+        if (isCorrect()) {
+          alert("You have solved it!!");
+        } else {
+          alert("It is not the right answer. Try it again!");
+        }
+      } else if (validateSudoku() == 2) {
+        alert("There are empty cells or non-numerical cells");
+      } else {
+        alert("Number should be between 1 and 9");
+      }
+    });
 
-	$('button').on('click', () => {
-		if (validateSudoku()) {
-			if (isCorrect()) {
-				alert('You have solved it!!');
-			} else {
-				alert('It is not the right answer. Try it again!');
-			}
-		} else {
-			alert('There are empty cells or non-numerical cells or Number should be between 1 and 9');
-		}
-	});
-
-	const httpReq = new XMLHttpRequest();
-	httpReq.onload = () => {
-		if (httpReq.status == 200) {
-			for (let obj of JSON.parse(httpReq.response)) {
-				const value = Array.from(obj.val, Number);
-				data.push(value);
-			}
-			set();
-		}
-		// console.log(httpReq.status);
-	};
-	httpReq.open('GET', 'MOCK_DATA.json', true);
-	httpReq.send();
-</script>
-
+    const httpReq = new XMLHttpRequest();
+    httpReq.onload = () => {
+      if (httpReq.status == 200) {
+        for (let obj of JSON.parse(httpReq.response)) {
+          const value = Array.from(obj.val, Number);
+          data.push(value);
+        }
+        set();
+      }
+      // console.log(httpReq.status);
+    };
+    httpReq.open("GET", "MOCK_DATA.json", true);
+    httpReq.send();
+  </script>
 </html>
